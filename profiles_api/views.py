@@ -2,11 +2,15 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response#Return response object from API view
 
+
+from rest_framework import status#List of handy HTTP status codes that we can use when returning responses from our API
+from profiles_api import serializers
 # Create your views here.
 
 class HelloAPIView(APIView):
     """Test APIView"""
 
+    serializer_class= serializers.HelloSerializer
     #Function for a GET HTTP request
     def get(self, request, format=None):#format parameter is just best practice to include
         """Returns a list of APIView features"""
@@ -18,3 +22,25 @@ class HelloAPIView(APIView):
         ]
         return Response({'message':'Hello', 
                         'an_api_view':an_api_view})#return in JSON format
+    def post(self, request):
+        """Create a hello message with our name"""
+        serializer=self.serializer_class(data=request.data)#retrieve the serializer that we defined in the serializer_class attribute above. We pass in the request data to the class
+        if serializer.is_valid():
+            name=serializer.validated_data.get('name') #retrieve the name field defined in our serializer
+            message=f'Hello {name}'
+            return Response({'message':message})
+        else:
+            return Response(
+                serializer.errors, 
+                status=status.HTTP_400_BAD_REQUEST
+                )
+    def put(self, request, pk=None):#Need pk to identify which object to put
+        """Handle updating an object"""
+        return Response({'method':'PUT'})
+    def patch(self, request,pk=None):
+        """Handle partial update of object"""
+        return Response({'method':"PATCH"})
+    def delete(self, request, pk=None):
+        """Delete and object"""
+        return Response({'method':'DELETE'})
+
