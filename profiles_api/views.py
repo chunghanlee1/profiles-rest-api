@@ -44,3 +44,40 @@ class HelloAPIView(APIView):
         """Delete and object"""
         return Response({'method':'DELETE'})
 
+
+
+from rest_framework import viewsets
+class HelloViewSet(viewsets.ViewSet):
+    """Test api viewset"""
+
+    serializer_class=serializers.HelloSerializer
+    def list(self, request):
+        """Return hellp message"""
+        a_view_set=[
+            'Uses actions (list, create, retrieve, update, partial_update)',
+            "Automatically maps to URLs using Routers",
+            "Provides more functionality with less code",
+        ]
+        return Response({'message':'Hello',
+                        'view_set':a_view_set})
+    def create(self, request):
+        """Create a new hello message"""
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            name=serializer.validated_data.get('name')
+            message=f'Hello {name}'
+            return Response({'message':message})
+        else:
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
+    def retrieve(self, request, pk=None):
+        """Handle getting an object by its ID"""
+        return Response({'http_method':'GET'})
+    def update(self, request, pk=None):
+        """Update"""
+        return Response({'http_method':'PUT'})
+    def partial_update(self, request, pk=None):
+        return Response({'http_method':'PATCH'})
+    def destroy(self, request, pk=None):
+        """removing"""
+        return Response({'http_method':'DELETE'})
