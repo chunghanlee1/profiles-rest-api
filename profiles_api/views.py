@@ -77,7 +77,21 @@ class HelloViewSet(viewsets.ViewSet):
         """Update"""
         return Response({'http_method':'PUT'})
     def partial_update(self, request, pk=None):
+        """partial update"""
         return Response({'http_method':'PATCH'})
     def destroy(self, request, pk=None):
         """removing"""
         return Response({'http_method':'DELETE'})
+
+
+
+from profiles_api import models
+from rest_framework.authentication import TokenAuthentication
+from profiles_api import permissions
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    """Handle creating and updating profiles"""
+    serializer_class=serializers.UserProfileSerializer
+    queryset= models.UserProfile.objects.all()
+    authentication_classes= (TokenAuthentication,)#Specify the authentication process we use in our API so we can verify who the user is
+    permission_classes=(permissions.UpdateOwnProfile,)#Specify the permission level of the authenticated user

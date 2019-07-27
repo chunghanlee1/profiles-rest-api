@@ -4,6 +4,7 @@ from rest_framework.routers import DefaultRouter
 
 router=DefaultRouter()
 router.register('hello-viewset', views.HelloViewSet, base_name='hello-viewset')
+router.register('profile', views.UserProfileViewSet)#No need base_name here since framework can deduce from model used in queryset defined in views.
 
 urlpatterns = [
     path('hello-view/', views.HelloAPIView.as_view()),
