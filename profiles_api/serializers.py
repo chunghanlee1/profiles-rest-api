@@ -28,4 +28,13 @@ class UserProfileSerializer(serializers.ModelSerializer):
             password=validated_data['password']
         )
         return user
+    #THIS IS MY GUESS
+    def update(self,instance,validated_data):
+        for k,v in validated_data.items():
+            if k == 'password':
+                instance.set_password(v)
+            else:
+                setattr(instance,k,v)
+        instance.save()
+        return instance
     

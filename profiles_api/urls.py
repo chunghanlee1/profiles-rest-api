@@ -8,5 +8,6 @@ router.register('profile', views.UserProfileViewSet)#No need base_name here sinc
 
 urlpatterns = [
     path('hello-view/', views.HelloAPIView.as_view()),
+    path('login/', views.UserLoginApiView.as_view()),
     path('',include(router.urls)),#include all generated urls here
 ]

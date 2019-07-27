@@ -88,7 +88,6 @@ class HelloViewSet(viewsets.ViewSet):
 from profiles_api import models,permissions
 from rest_framework import authentication, filters
 
-
 class UserProfileViewSet(viewsets.ModelViewSet):
     """Handle creating and updating profiles"""
     serializer_class=serializers.UserProfileSerializer
@@ -97,3 +96,12 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     permission_classes=(permissions.UpdateOwnProfile,)#Specify the permission level of the authenticated user
     filter_backends=(filters.SearchFilter,)
     search_fields=('name', 'email',)
+
+
+
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.settings import api_settings
+class UserLoginApiView(ObtainAuthToken):
+    """Handle creating user authentication tokens"""
+    #make it visible in browsable API, the other viewsets have this by default, but not obtainauthtoken
+    renderer_classes= api_settings.DEFAULT_RENDERER_CLASSES
