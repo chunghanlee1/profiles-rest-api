@@ -49,3 +49,16 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
+
+
+from django.conf import settings#In order to retrieve the AUTH_USER_MODEL
+class ProfileFeedItem(models.Model):
+    """Profile status update"""
+    user_profile=models.ForeignKey(
+        settings.AUTH_USER_MODEL,#Flexible reference in case we want to switch back to normal auth models in the future
+        on_delete=models.CASCADE
+    )
+    status_text=models.CharField(max_length=255)
+    created_on = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return self.status_text

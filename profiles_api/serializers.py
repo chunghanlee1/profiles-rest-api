@@ -28,7 +28,6 @@ class UserProfileSerializer(serializers.ModelSerializer):
             password=validated_data['password']
         )
         return user
-    #THIS IS MY GUESS
     def update(self,instance,validated_data):
         for k,v in validated_data.items():
             if k == 'password':
@@ -38,3 +37,13 @@ class UserProfileSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
     
+
+
+class ProfileFeedSerializer(serializers.ModelSerializer):
+    """Serializers profile feed items"""
+    class Meta:
+        model=models.ProfileFeedItem
+        fields=('id','user_profile','status_text','created_on')#id and created_on is read-only by default
+        extra_kwargs={
+            'user_profile':{'read_only':True}
+        }
