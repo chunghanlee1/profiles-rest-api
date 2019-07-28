@@ -107,7 +107,7 @@ class UserLoginApiView(ObtainAuthToken):
     #make it visible in browsable API, the other viewsets have this by default, but not obtainauthtoken
     renderer_classes= api_settings.DEFAULT_RENDERER_CLASSES
 
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework import permissions as rest_permissions
 
 class UserProfileFeedViewSet(viewsets.ModelViewSet):
     """Handling creating, reading and updating profile feeds"""
@@ -116,8 +116,8 @@ class UserProfileFeedViewSet(viewsets.ModelViewSet):
     queryset=models.ProfileFeedItem.objects.all()
     permission_classes = (
         permissions.UpdateOwnStatus,#only able to update their own
-        IsAuthenticated,#Limit viewing to authenticated user only
-        IsAuthenticatedOrReadOnly#if not logged in, can't edit
+        rest_permissions.IsAuthenticated,#Limit viewing to authenticated user only
+        rest_permissions.IsAuthenticatedOrReadOnly#if not logged in, can't edit
     )
     
     def perform_create(self, serializer):#Override behavior for creating objects through a model viewset
